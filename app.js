@@ -9,6 +9,12 @@ app.get('/',(req,res)=>{
 })
 
 app.get('/add',userctrl.addUser)
+app.get('/create',userctrl.curdCreate)
+app.get('/curdUpdate',userctrl.curdUpdate)
+app.get('/curdDelete',userctrl.curdDelete)
+app.get('/curdfindAll',userctrl.curdfindAll)
+
+
 
 app.listen(port,()=>{
     console.log('running on port 8000')
