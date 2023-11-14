@@ -13,6 +13,13 @@ app.get('/create',userctrl.curdCreate)
 app.get('/curdUpdate',userctrl.curdUpdate)
 app.get('/curdDelete',userctrl.curdDelete)
 app.get('/curdfindAll',userctrl.curdfindAll)
+app.get('/queryUser',userctrl.queryUser)
+app.get('/queryfindAll',userctrl.queryfindAll)
+app.get('/querycondition',userctrl.querycondition)
+app.get('/finders',userctrl.finders)
+
+
+
 
 
 
