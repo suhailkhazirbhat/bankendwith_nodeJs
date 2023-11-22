@@ -17,6 +17,10 @@ app.get('/queryUser',userctrl.queryUser)
 app.get('/queryfindAll',userctrl.queryfindAll)
 app.get('/querycondition',userctrl.querycondition)
 app.get('/finders',userctrl.finders)
+app.get('/validtion',userctrl.validtion)
+app.get('/rawQuerry',userctrl.rawQuerry)
+
+
 
 
 

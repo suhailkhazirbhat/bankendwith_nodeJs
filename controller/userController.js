@@ -1,5 +1,5 @@
 var db=require('../model')
-const  {Sequelize,Op} = require('sequelize');
+const  {Sequelize,Op,QueryTypes} = require('sequelize');
 var Users=db.users
 // var Sequelize=db.Sequelize
 var addUser = async (req,resp)=>{
@@ -172,28 +172,100 @@ var finders = async (req,resp)=>{
         //   if (created) {
         //     console.log(data.name); // This will certainly be 'Technical Lead JavaScript'
         //   }
-        const { count, rows } = await Users.findAndCountAll({
-            where: {
-              name: {
-                [Op.like]: 'suhail%'
-              }
-            },
-            offset: 10,
-            limit: 2
-          });
-          console.log(count);
-          console.log(rows);
+        // const { count, rows } = await Users.findAndCountAll({
+        //     where: {
+        //       name: {
+        //         [Op.like]: 'suhail%'
+        //       }
+        //     },
+        //     offset: 10,
+        //     limit: 2
+        //   });
+        //   console.log(count);
+        //   console.log(rows);
         
-        let response={
-            data:'ok'
-        }
-         resp.status(200).json({data:rows,messeage:"idquerysueccfully",c:count})
+        // let response={
+        //     data:'ok'
+        // }
+        //  resp.status(200).json({data:rows,messeage:"idquerysueccfully",c:count})
     
     }
+ const validtion   = async (req,resp)=>{
+    let data
+    const messages={}
+    try {
+        let data= await Users.create({name:'demo',email:'demo411499d@gmail.com',gender:'male'});
+        messages
 
+    } catch (e) {
+        data=e
+        console.log(e)
+       
+        e.errors.forEach((error) => {
+            let message;
+        
+        // switch (error.validatorKey) {
+            
+        //     case 'not_unique':
+        //         message='Duplicate Email';
+                
+        //         break;
+        //         case 'isIn':
+        //             message='male or female is not';
+                    
+        //             break; 
+        //             case 'equals':
+        //                 console.log(error.message)
+        //                 message='male or female is not';
+                        
+        //                 break;           
+               
+        
+           
+        // }
+        message=error.message
+        messages[error.path]=message;
+        console.log(messages)
+    });
+    }
+   
+    let response={
+        data:'ok'
+    }
+     resp.status(200).json({data:data,messages})
+
+ }
+
+const rawQuerry=async(req,resp)=>{
+    const users=await db.sequelize.query('Select * from users where gender=$gender',{
+        // 1 ->Select * from users where gender=:gender
+        // 2-> Select * from users where gender=?
+       
+        type:QueryTypes.SELECT,
+        // model:Users,
+        // mapToModel:true,
+        // raw:true
+        // 1-> replacements:{gender:'male'}
+        // 2->replacements:['female']
+        // replacements:{gender:['male','females']} where gender IN (:gender)
+        // replacements:{searchEmail:'%@gmail.com'} where email LIKE :searchEmail
+        bind:{gender:'male'}
+        
+
+
+    })
+    let response={
+        data:'ok',RECORDS:users
+    }
+     resp.status(200).json(response)
+
+
+}
 
 
 module.exports={
+    rawQuerry,
+    validtion,
     queryfindAll,
     queryUser,
     curdfindAll,
